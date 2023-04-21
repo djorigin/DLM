@@ -3,6 +3,7 @@ from django.core.exceptions import ValidationError
 from datetime import date
 from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
+from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin,User
 
 # Create your models here.
@@ -115,7 +116,7 @@ class Client(AbstractBaseUser, PermissionsMixin):
     objects = ClientManager()
 
     USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = ['first_name','last_name','password']
+    REQUIRED_FIELDS = ['first_name','last_name','password','date_of_birth']
 
     def save(self, *args, **kwargs):
         if self.first_name is not None and self.first_name.strip():
@@ -126,6 +127,19 @@ class Client(AbstractBaseUser, PermissionsMixin):
             self.last_name = self.last_name.title()
         super().save(*args, **kwargs)
 
+    def save(self, *args, **kwargs):
+        # check if the password has been changed
+        if self.pk is None or self.password != Client.objects.get(pk=self.pk).password:
+            # prompt the user to confirm the password
+            password_confirmation = input("Please confirm your password: ")
+            if self.password != password_confirmation:
+                raise ValueError("Password confirmation does not match")
+
+            # hash the password before saving
+            self.password = make_password(self.password)
+
+        super().save(*args, **kwargs)
+
     def clean(self):
         validate_unique_licence_number(self)
         validate_unique_tax_file_number(self)
@@ -134,7 +148,7 @@ class Client(AbstractBaseUser, PermissionsMixin):
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.username)
-        super(Client(), self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
     def get_short_name(self):
         return self.first_name
