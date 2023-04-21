@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'crispy_forms',
     'crispy_bootstrap5',
+    'personnelManager', # This is the app that I created on 21/04/2023
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
@@ -140,7 +141,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-#AUTH_USER_MODEL = 'coreuser.HRuserManager'
+AUTH_USER_MODEL = 'personnelManager.Client' # This is the custom User Model created on 21/04/2023
 
 #LOGIN_REDIRECT_URL = 'home'
 #LOGOUT_REDIRECT_URL = 'index'
