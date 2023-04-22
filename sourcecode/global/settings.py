@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'djmoney', # Installed on 23/04/2023
     'crispy_forms',
     'crispy_bootstrap5',
     'django_htmx', # Installed on 23/04/2023

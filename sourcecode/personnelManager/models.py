@@ -7,7 +7,6 @@ from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin,User
 
-# Create your models here.
 class ClientManager(BaseUserManager):
     def create_user(self, username, password=None, **extra_fields):
         """
@@ -39,7 +38,6 @@ Validator Checks for DataModels
 
 """
 # Validator to check if the fields contains only letters and spaces
-
 def validate_only_letters(value):
     if not all(c.isalpha() or c.isspace() for c in value):
         raise ValidationError(
@@ -47,23 +45,20 @@ def validate_only_letters(value):
             params={'value': value},
         )
 # Validator to check if the username contains only letters and numbers and spaces
-
 def validate_letters_and_numbers(value):
     if not all(c.isalnum() or c.isspace() for c in value):
         raise ValidationError(
             _(f"{value} is not a valid username. The username should contain only letters and numbers."),
             params={'value': value},
         )
-        
-        
 # Validator to check if the fields contains only numbers
-
 def validate_only_numbers(value):
     if not value.isdigit():
         raise ValidationError(
             _(f"{value} is not a valid input. The field should contain only numbers."),
             params={'value': value},
         )
+
 def validate_unique_licence_number(instance):
     """
     Validates that there is no other non-blank instance of licence_number.
@@ -86,34 +81,95 @@ def validate_unique_tax_file_number(instance):
 DataModels
 
 """
-
 class Client(AbstractBaseUser, PermissionsMixin):
     GENDER_CHOICES = (
         ('M', 'Male'),
         ('F', 'Female'),
         ('O', 'Other'),
     )
-    client_slug = models.SlugField(max_length=50, unique=True, blank=True)
-    username = models.CharField(max_length=50, unique=True, validators=[validate_letters_and_numbers])
-    password = models.CharField(_('password'), max_length=128, help_text=_('Enter password for this user.'))
-    email = models.EmailField(max_length=255, unique=True)
-    first_name = models.CharField(max_length=30, validators=[validate_only_letters])
-    middle_name = models.CharField(max_length=30, blank=True, validators=[validate_only_letters])
-    last_name = models.CharField(max_length=30, validators=[validate_only_letters])
-    address = AddressField(null=True, blank=True)
-    phone = models.CharField(max_length=10, blank=True, validators=[validate_only_numbers])
-    gender = models.CharField(max_length=1, choices=GENDER_CHOICES, blank=True)
-    date_of_birth = models.DateField(null=True, blank=True)
-    age = models.PositiveIntegerField(null=True, blank=True)
-    profile_photo = models.ImageField(upload_to='profile_photos/', null=True, blank=True)
-    tax_file_number = models.CharField(max_length=9, null=True, blank=True, validators=[validate_only_numbers])
-    licence_number = models.CharField(max_length=20, null=True, blank=True, validators=[validate_letters_and_numbers])
-    is_staff = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=True)
-    date_joined = models.DateTimeField(auto_now_add=True)
-    last_login = models.DateTimeField(auto_now=True)
-
-
+    client_slug = models.SlugField(
+        max_length=50,
+        unique=True,
+        blank=True
+        )
+    username = models.CharField(
+        max_length=50,
+        unique=True,
+        validators=[validate_letters_and_numbers]
+        )
+    password = models.CharField(
+        _('password'),
+        max_length=128,
+        help_text=_('Enter password for this user.')
+        )
+    email = models.EmailField(
+        max_length=255,
+        unique=True
+        )
+    first_name = models.CharField(
+        max_length=30,
+        validators=[validate_only_letters]
+        )
+    middle_name = models.CharField(
+        max_length=30,
+        blank=True,
+        validators=[validate_only_letters]
+        )
+    last_name = models.CharField(
+        max_length=30,
+        validators=[validate_only_letters]
+        )
+    address = AddressField(
+        null=True,
+        blank=True
+        )
+    phone = models.CharField(
+        max_length=10,
+        blank=True,
+        validators=[validate_only_numbers]
+        )
+    gender = models.CharField(
+        max_length=1,
+        choices=GENDER_CHOICES,
+        blank=True
+        )
+    date_of_birth = models.DateField(
+        null=True,
+        blank=True
+        )
+    age = models.PositiveIntegerField(
+        null=True,
+        blank=True
+        )
+    profile_photo = models.ImageField(
+        upload_to='profile_photos/',
+        null=True,
+        blank=True
+        )
+    tax_file_number = models.CharField(
+        max_length=9,
+        null=True,
+        blank=True,
+        validators=[validate_only_numbers]
+        )
+    licence_number = models.CharField(
+        max_length=20,
+        null=True,
+        blank=True,
+        validators=[validate_letters_and_numbers]
+        )
+    is_staff = models.BooleanField(
+        default=False
+        )
+    is_active = models.BooleanField(
+        default=True
+        )
+    date_joined = models.DateTimeField(
+        auto_now_add=True
+        )
+    last_login = models.DateTimeField(
+        auto_now=True
+        )
     objects = ClientManager()
 
     USERNAME_FIELD = 'username'
@@ -144,8 +200,6 @@ class Client(AbstractBaseUser, PermissionsMixin):
     def clean(self):
         validate_unique_licence_number(self)
         validate_unique_tax_file_number(self)
-    
-    
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.username)
@@ -182,10 +236,25 @@ class Client(AbstractBaseUser, PermissionsMixin):
 
 class Department(models.Model):
 
-    department_slug = models.SlugField(max_length=50, unique=True, blank=True)
-    department_name = models.CharField(max_length=50, blank=True, validators=[validate_only_letters])
-    department_head = models.ForeignKey(Client, on_delete=models.CASCADE, related_name='department_id')
-    department_description = models.CharField(max_length=100, blank=True)
+    department_slug = models.SlugField(
+        max_length=50,
+        unique=True,
+        blank=True
+        )
+    department_name = models.CharField(
+        max_length=50,
+        blank=True,
+        validators=[validate_only_letters]
+        )
+    department_head = models.ForeignKey(
+        Client,
+        on_delete=models.CASCADE,
+        related_name='department_id'
+        )
+    department_description = models.CharField(
+        max_length=100,
+        blank=True
+        )
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -214,10 +283,26 @@ class Employee(models.Model):
         ('C', 'Casual'),
 
     )
-    employee_slug = models.SlugField(max_length=50, unique=True, blank=True)
-    client_id = models.ForeignKey(Client, on_delete=models.CASCADE, related_name='employee_id')
-    employeement_status = models.CharField(max_length=1, choices=EMPLOYMENT_STATUS_CHOICES, blank=True)
-    department_id = models.ForeignKey(Department, on_delete=models.CASCADE, related_name='employee_id')
+    employee_slug = models.SlugField(
+        max_length=50,
+        unique=True,
+        blank=True
+        )
+    client_id = models.ForeignKey(
+        Client,
+        on_delete=models.CASCADE,
+        related_name='employee_id'
+        )
+    employeement_status = models.CharField(
+        max_length=1,
+        choices=EMPLOYMENT_STATUS_CHOICES,
+        blank=True
+        )
+    department_id = models.ForeignKey(
+        Department,
+        on_delete=models.CASCADE,
+        related_name='employee_id'
+        )
 
 
 
