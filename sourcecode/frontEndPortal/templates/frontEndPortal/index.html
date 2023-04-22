@@ -1,5 +1,7 @@
 {% extends 'base.html' %} 
     {% block content %} 
         <h1>Front End Portal</h1> 
+        <a href="{% url 'home' %}">Personnel Manager</a>
+        <a href="{% url 'payroll_home' %}">Payroll</a>
         <p>Front End Portal</p>
     {% endblock %}

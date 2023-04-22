@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'crispy_forms',
     'crispy_bootstrap5',
+    'django_htmx', # Installed on 23/04/2023
     'address',
     'personnelManager', # This is the app that I created on 21/04/2023
     'payroll', # created app on 22/04/2023
@@ -58,6 +59,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_htmx.middleware.HtmxMiddleware', # Installed on 23/04/2023
 ]
 
 ROOT_URLCONF = 'global.urls'

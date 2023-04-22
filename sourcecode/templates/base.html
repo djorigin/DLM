@@ -6,10 +6,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'bootstrap5/css/bootstrap.min.css' %}">
+    <script src="https://unpkg.com/htmx.org@1.9.0" integrity="sha384-aOxz9UdWG0yBiyrTwPeMibmaoq07/d3a96GCbb9x60f3mOt5zwkjdbcHFnKH8qls" crossorigin="anonymous"></script>
     <title>Base Block</title>
 </head>
 <body>
-
+<a href="{% url 'frontEndPortal' %}">Portal Home</a>
     {% block content %}
 
     {% endblock %}    
