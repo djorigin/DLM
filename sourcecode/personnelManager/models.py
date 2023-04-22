@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.exceptions import ValidationError
 from datetime import date
+from address.models import AddressField
 from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.hashers import make_password
@@ -100,6 +101,7 @@ class Client(AbstractBaseUser, PermissionsMixin):
     middle_name = models.CharField(max_length=30, blank=True, validators=[validate_only_letters])
     last_name = models.CharField(max_length=30, validators=[validate_only_letters])
     email = models.EmailField(max_length=254, blank=True)
+    address = AddressField(null=True, blank=True)
     phone = models.CharField(max_length=10, blank=True, validators=[validate_only_numbers])
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES, blank=True)
     date_of_birth = models.DateField(null=True, blank=True)

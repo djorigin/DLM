@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'crispy_forms',
     'crispy_bootstrap5',
+    'address',
     'personnelManager', # This is the app that I created on 21/04/2023
 ]
 
@@ -78,6 +79,13 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'global.wsgi.application'
+
+
+# Specify your Google API key as environment variable GOOGLE_API_KEY
+# You may also specify it here, though be sure not to commit it to a repository
+#GOOGLE_API_KEY = ""  # Specify your Google API key here
+#GOOGLE_API_KEY = os.environ.get("GOOGLE_API_KEY", GOOGLE_API_KEY)
+
 
 
 # Database
