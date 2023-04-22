@@ -100,7 +100,6 @@ class Client(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(max_length=30, validators=[validate_only_letters])
     middle_name = models.CharField(max_length=30, blank=True, validators=[validate_only_letters])
     last_name = models.CharField(max_length=30, validators=[validate_only_letters])
-    email = models.EmailField(max_length=254, blank=True)
     address = AddressField(null=True, blank=True)
     phone = models.CharField(max_length=10, blank=True, validators=[validate_only_numbers])
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES, blank=True)
@@ -176,3 +175,57 @@ class Client(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.username
 
+"""
+* Department Model
+
+"""
+
+class Department(models.Model):
+
+    department_slug = models.SlugField(max_length=50, unique=True, blank=True)
+    department_name = models.CharField(max_length=50, blank=True, validators=[validate_only_letters])
+    department_head = models.ForeignKey(Client, on_delete=models.CASCADE, related_name='department_id')
+    department_description = models.CharField(max_length=100, blank=True)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = f"{slugify('DEP')}-{self.department.id}-{slugify('20A1')}"
+        super().save(*args, **kwargs)
+
+    def save(self, *args, **kwargs):
+        if self.department_name is not None and self.department_name.strip():
+            self.department_name = self.department_name.title()
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.department_name
+
+
+"""
+* Employee Model
+"""
+
+class Employee(models.Model):
+
+    EMPLOYMENT_STATUS_CHOICES = (
+
+        ('F', 'Full Time'),
+        ('P', 'Part Time'),
+        ('C', 'Casual'),
+
+    )
+    employee_slug = models.SlugField(max_length=50, unique=True, blank=True)
+    client_id = models.ForeignKey(Client, on_delete=models.CASCADE, related_name='employee_id')
+    employeement_status = models.CharField(max_length=1, choices=EMPLOYMENT_STATUS_CHOICES, blank=True)
+    department_id = models.ForeignKey(Department, on_delete=models.CASCADE, related_name='employee_id')
+
+
+
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = f"{slugify('EMP')}-{self.employee.id}-{slugify('1001')}"
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.employee_slug
