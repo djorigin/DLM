@@ -1,0 +1,56 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    
+    
+
+    
+}
+html{
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    color: #333;
+}
+a{
+    text-decoration: none;
+}
+.container{
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+}
+body{
+    background-image: url('/static/images/port1.png');
+    background-size: cover;
+    background-position: top-center;
+    background-repeat: no-repeat;
+    position: relative;
+}
+#hero .nogo{
+    color:red;
+}
+#hero h1{
+    display:block;
+    width:fit-content;
+    font-size: 4rem;
+    position:relative;
+    color:white;
+}
+#hero .cta{
+    display:inline-block;
+    padding: 10px 30px;
+    color: crimson;
+    background-color:transparent;
+    border: 2px solid crimson;
+}
+#hero h2{
+    color: white;
+}
+#hero .thumbnail{
+    width: 70%;
+    height: 30%;
+    overflow: auto;
+    }

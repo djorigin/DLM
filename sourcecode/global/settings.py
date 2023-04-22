@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'address',
     'personnelManager', # This is the app that I created on 21/04/2023
     'payroll', # created app on 22/04/2023
+    'frontEndPortal', # created app on 22/04/2023
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
